@@ -36,8 +36,7 @@ Movie management system/
     │   └── style.css
     ├── view/                                             # Tầng giao diện JSP chia theo gói (Mục 2.3.3)
     │   ├── Member/
-    │   │   ├── LoginView.jsp
-    │   │   └── ChangePasswordView.jsp
+    │   │   └── LoginView.jsp
     │   ├── Customer/
     │   │   ├── CustomerHomeView.jsp
     │   │   └── SearchMovieView.jsp
