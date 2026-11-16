@@ -1,0 +1,7 @@
+apache tomcat 9/
+build/
+.idea/
+WebContent/WEB-INF/classes/
+*.war
+*.docx
+*.pdf
