@@ -8,10 +8,13 @@
         inMovieName = request.getParameter("inMovieName");
     }
 
+    // Danh sách phim tìm kiếm (kết quả của MovieDAO.searchMovies)
     Movie[] outsubMovieList = (Movie[]) request.getAttribute("outsubMovieList");
+    // Hai thực thể ẩn trên Class Diagram Hình 2.4 (kết quả của getMovieDetail và getShowtimesByMovie)
     MovieGenre[] movieGenre = (MovieGenre[]) request.getAttribute("movieGenre");
     Showtime[] showtime = (Showtime[]) request.getAttribute("showtime");
 
+    // Truy xuất đối tượng Movie và danh sách thể loại Genre từ thực thể ẩn movieGenre[]
     Movie selectedMovie = null;
     String genreText = "";
     if (movieGenre != null && movieGenre.length > 0) {
@@ -28,6 +31,7 @@
         genreText = sb.toString();
     }
 
+    // Truy xuất định dạng phòng chiếu (format) từ thực thể ẩn showtime[] -> Room
     String formatText = "";
     if (showtime != null && showtime.length > 0) {
         List<String> formats = new ArrayList<String>();

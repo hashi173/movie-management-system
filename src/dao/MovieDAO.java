@@ -19,12 +19,12 @@ public class MovieDAO extends DAO {
     }
 
     /**
+     * [Bước 7 - 11 trên Sequence Hình 2.8]
      * Tìm kiếm danh sách các bộ phim có tên chứa từ khóa keyword
-     * @param keyword từ khóa tên phim cần tìm
-     * @return mảng Movie[] khớp với từ khóa
      */
     public Movie[] searchMovies(String keyword) {
         List<Movie> list = new ArrayList<>();
+        // Câu truy vấn SQL tìm phim theo tên (title) và sắp xếp theo ngày khởi chiếu
         String sql = "SELECT movieCode, title, duration, ageLimit, director, actor, "
                    + "language, description, status, poster, releaseDate "
                    + "FROM tblMovie WHERE title LIKE ? ORDER BY releaseDate DESC";
@@ -35,6 +35,7 @@ public class MovieDAO extends DAO {
                 ps.setString(1, searchPattern);
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
+                    // Bước 8 - 10: Khởi tạo và đóng gói thông tin thực thể Movie
                     Movie movie = new Movie();
                     movie.setMovieCode(rs.getString("movieCode"));
                     movie.setTitle(rs.getString("title"));
@@ -56,13 +57,14 @@ public class MovieDAO extends DAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // Bước 11: Trả về mảng Movie[] cho SearchMovieServlet
         return list.toArray(new Movie[0]);
     }
 
     /**
-     * Lấy thông tin chi tiết của một bộ phim và các thể loại của phim theo mã phim
-     * @param movieCode mã bộ phim được chọn
-     * @return mảng MovieGenre[] chứa đối tượng Movie và các Genre tương ứng
+     * [Bước 17 - 27 trên Sequence Hình 2.8]
+     * Lấy thông tin chi tiết của bộ phim và danh sách thể loại (MovieGenre[]) theo mã phim
+     * Thứ tự đóng gói: Movie (18-20) -> Genre (21-23) -> MovieGenre (24-26)
      */
     public MovieGenre[] getMovieDetail(String movieCode) {
         List<MovieGenre> list = new ArrayList<>();
@@ -79,6 +81,7 @@ public class MovieDAO extends DAO {
                 ps.setString(1, movieCode.trim());
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
+                    // Bước 18 - 20: Đóng gói thực thể Movie
                     Movie movie = new Movie();
                     movie.setMovieCode(rs.getString("movieCode"));
                     movie.setTitle(rs.getString("title"));
@@ -99,7 +102,9 @@ public class MovieDAO extends DAO {
                     psGenre.setString(1, movie.getMovieCode());
                     ResultSet rsGenre = psGenre.executeQuery();
                     while (rsGenre.next()) {
+                        // Bước 21 - 23: Đóng gói thực thể Genre
                         Genre genre = new Genre(rsGenre.getString("genreCode"), rsGenre.getString("genreName"));
+                        // Bước 24 - 26: Đóng gói thực thể MovieGenre (chứa movie và genre)
                         MovieGenre mg = new MovieGenre(rsGenre.getInt("id"), movie, genre);
                         list.add(mg);
                     }
@@ -112,13 +117,14 @@ public class MovieDAO extends DAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // Bước 27: Trả về mảng MovieGenre[] cho SearchMovieServlet
         return list.toArray(new MovieGenre[0]);
     }
 
     /**
-     * Lấy danh sách các suất chiếu kèm thông tin phòng chiếu (định dạng chiếu) của một bộ phim
-     * @param movieCode mã bộ phim được chọn
-     * @return mảng Showtime[] chứa thông tin Room và format tương ứng
+     * [Bước 28 - 35 trên Sequence Hình 2.8]
+     * Lấy danh sách các suất chiếu kèm thông tin phòng chiếu (format) của bộ phim
+     * Thứ tự đóng gói: Room (29-31) -> Showtime (32-34)
      */
     public Showtime[] getShowtimesByMovie(String movieCode) {
         List<Showtime> list = new ArrayList<>();
@@ -133,6 +139,7 @@ public class MovieDAO extends DAO {
                 ps.setString(1, movieCode.trim());
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
+                    // Bước 29 - 31: Đóng gói thực thể Room (chứa định dạng phòng chiếu format)
                     Room room = new Room();
                     room.setRoomCode(rs.getString("roomCode"));
                     room.setRoomName(rs.getString("roomName"));
@@ -140,6 +147,7 @@ public class MovieDAO extends DAO {
                     room.setCapacity(rs.getInt("capacity"));
                     room.setStatus(rs.getString("roomStatus"));
 
+                    // Bước 32 - 34: Đóng gói thực thể Showtime (gắn đối tượng Room)
                     Showtime showtime = new Showtime();
                     showtime.setShowtimeCode(rs.getString("showtimeCode"));
                     Time start = rs.getTime("startTime");
@@ -159,6 +167,7 @@ public class MovieDAO extends DAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // Bước 35: Trả về mảng Showtime[] cho SearchMovieServlet
         return list.toArray(new Showtime[0]);
     }
 }

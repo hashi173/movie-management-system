@@ -44,6 +44,7 @@ public class CustomerStatisticsServlet extends HttpServlet {
         processRequest(request, response);
     }
 
+    // Bước 15 & 25 (Sequence Hình 2.10): Xử lý thống kê khách hàng theo doanh thu và xem chi tiết giao dịch
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -60,6 +61,7 @@ public class CustomerStatisticsServlet extends HttpServlet {
 
         String action = request.getParameter("action");
 
+        // === NHÁNH 2 (Bước 25 - 43 trên Sequence Hình 2.10): Xem chi tiết giao dịch của 1 khách hàng ===
         if ("viewTransactions".equalsIgnoreCase(action)) {
             String customerCode = request.getParameter("customerCode");
             String rawStartDate = request.getParameter("startDate");
@@ -89,14 +91,17 @@ public class CustomerStatisticsServlet extends HttpServlet {
                 endDate = (LocalDate) session.getAttribute("endDateObj");
             }
 
+            // Bước 26 - 42: Gọi TransactionDAO.getTransactionsByCustomer()
             Transaction[] transaction = transactionDAO.getTransactionsByCustomer(customerCode, startDate, endDate);
             request.setAttribute("transaction", transaction);
 
+            // Bước 43: Chuyển tiếp (forward) sang trang CustomerTransactionStatisticsView.jsp
             RequestDispatcher dispatcher = request.getRequestDispatcher("/view/ManagementStaff/CustomerTransactionStatisticsView.jsp");
             dispatcher.forward(request, response);
             return;
         }
 
+        // === NHÁNH 1 (Bước 15 - 21 trên Sequence Hình 2.10): Xem thống kê khách hàng theo doanh thu ===
         String rawStartDate = request.getParameter("inStartDate");
         String rawEndDate = request.getParameter("inEndDate");
 
@@ -131,6 +136,7 @@ public class CustomerStatisticsServlet extends HttpServlet {
             return;
         }
 
+        // Ngoại lệ 8.2: Ngày kết thúc sớm hơn ngày bắt đầu
         if (endDate.isBefore(startDate)) {
             request.setAttribute("inStartDate", rawStartDate);
             request.setAttribute("inEndDate", rawEndDate);
@@ -140,8 +146,10 @@ public class CustomerStatisticsServlet extends HttpServlet {
             return;
         }
 
+        // Bước 16 - 20: Gọi CustomerStatisticDAO.getCustomerStatisticsByRevenue(startDate, endDate)
         CustomerStatistic[] customerStatistic = customerStatisticDAO.getCustomerStatisticsByRevenue(startDate, endDate);
 
+        // Ngoại lệ 8.1: Không có giao dịch nào trong khoảng thời gian đã chọn
         if (customerStatistic == null || customerStatistic.length == 0) {
             request.setAttribute("inStartDate", rawStartDate);
             request.setAttribute("inEndDate", rawEndDate);
@@ -151,6 +159,7 @@ public class CustomerStatisticsServlet extends HttpServlet {
             return;
         }
 
+        // Tính tổng doanh thu của tất cả khách hàng trong khoảng thời gian
         BigDecimal outTotalRevenue = BigDecimal.ZERO;
         for (CustomerStatistic cs : customerStatistic) {
             if (cs.getTotalAmount() != null) {
@@ -170,6 +179,7 @@ public class CustomerStatisticsServlet extends HttpServlet {
         request.setAttribute("customerStatistic", customerStatistic);
         request.setAttribute("outTotalRevenue", outTotalRevenue);
 
+        // Bước 21: Chuyển tiếp (forward) sang trang CustomerStatisticsByRevenueView.jsp
         RequestDispatcher dispatcher = request.getRequestDispatcher("/view/ManagementStaff/CustomerStatisticsByRevenueView.jsp");
         dispatcher.forward(request, response);
     }

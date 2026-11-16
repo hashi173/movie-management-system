@@ -12,10 +12,8 @@ public class MemberDAO extends DAO {
     }
 
     /**
+     * [Bước 3 - 7 trên Sequence Hình 2.10]
      * Kiểm tra thông tin đăng nhập của nhân viên quản lý
-     * @param username tên đăng nhập
-     * @param password mật khẩu
-     * @return đối tượng ManagementStaff nếu đăng nhập hợp lệ, ngược lại trả về null
      */
     public ManagementStaff checkLogin(String username, String password) {
         if (username == null || password == null) {
@@ -25,6 +23,7 @@ public class MemberDAO extends DAO {
                 || password.contains("true") || password.contains("=")) {
             return null;
         }
+        // Truy vấn kết hợp 3 bảng kế thừa: tblMember -> tblStaff -> tblManagementStaff
         String sql = "SELECT m.id, m.username, m.password, m.fullname, m.email, m.phone, m.dob, m.address, "
                    + "s.staffCode, s.position "
                    + "FROM tblMember m "
@@ -38,6 +37,7 @@ public class MemberDAO extends DAO {
                 ps.setString(2, password);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
+                    // Bước 4 - 6: Khởi tạo và đóng gói thực thể ManagementStaff
                     ManagementStaff staff = new ManagementStaff();
                     staff.setId(rs.getInt("id"));
                     staff.setUsername(rs.getString("username"));
@@ -52,6 +52,7 @@ public class MemberDAO extends DAO {
                     staff.setAddress(rs.getString("address"));
                     staff.setStaffCode(rs.getString("staffCode"));
                     staff.setPosition(rs.getString("position"));
+                    // Bước 7: Trả về ManagementStaff cho LoginServlet
                     return staff;
                 }
             }

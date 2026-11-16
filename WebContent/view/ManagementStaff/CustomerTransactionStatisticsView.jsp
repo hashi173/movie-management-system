@@ -2,14 +2,17 @@
          pageEncoding="UTF-8"
          import="java.math.BigDecimal,java.text.DecimalFormat,java.text.DecimalFormatSymbols,java.time.LocalDate,java.time.format.DateTimeFormatter,java.util.Locale,model.ManagementStaff,model.Transaction"%>
 <%
+    // Thực thể ẩn trên Class Diagram Hình 2.6: managementStaff (từ session)
     ManagementStaff managementStaff = (ManagementStaff) session.getAttribute("managementStaff");
     if (managementStaff == null) {
         response.sendRedirect(request.getContextPath() + "/view/Member/LoginView.jsp");
         return;
     }
 
+    // Thực thể ẩn trên Class Diagram Hình 2.6: transaction (kết quả từ TransactionDAO)
     Transaction[] transaction = (Transaction[]) request.getAttribute("transaction");
 
+    // Tính tổng tiền đã chi của khách hàng từ mảng transaction[]
     BigDecimal totalSpent = BigDecimal.ZERO;
     if (transaction != null) {
         for (Transaction t : transaction) {
@@ -19,6 +22,7 @@
         }
     }
 
+    // Truy xuất thông tin Customer từ phần tử đầu tiên: transaction[0].getCustomer()
     String khCode = (transaction != null && transaction.length > 0 && transaction[0].getCustomer() != null)
             ? transaction[0].getCustomer().getCustomerCode() : "";
     String khName = (transaction != null && transaction.length > 0 && transaction[0].getCustomer() != null)

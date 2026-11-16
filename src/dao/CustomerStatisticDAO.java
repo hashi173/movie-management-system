@@ -16,10 +16,9 @@ public class CustomerStatisticDAO extends DAO {
     }
 
     /**
-     * Lấy danh sách thống kê khách hàng theo doanh thu trong khoảng thời gian từ startDate đến endDate
-     * @param startDate ngày bắt đầu
-     * @param endDate ngày kết thúc
-     * @return mảng CustomerStatistic[] sắp xếp giảm dần theo tổng tiền đã chi
+     * [Bước 16 - 20 trên Sequence Hình 2.10]
+     * Lấy danh sách thống kê khách hàng theo doanh thu từ startDate đến endDate
+     * Tính toán 3 thuộc tính dẫn xuất: totalAmount (SUM), lastTransactionDate (MAX), lastTransactionTime
      */
     public CustomerStatistic[] getCustomerStatisticsByRevenue(LocalDate startDate, LocalDate endDate) {
         List<CustomerStatistic> list = new ArrayList<>();
@@ -27,6 +26,7 @@ public class CustomerStatisticDAO extends DAO {
             return new CustomerStatistic[0];
         }
 
+        // Kết hợp tblCustomer, tblMember, tblTransaction; sắp xếp tổng tiền giảm dần (ORDER BY totalAmount DESC)
         String sql = "SELECT m.id, m.username, m.fullname, m.email, m.phone, m.dob, m.address, "
                    + "c.customerCode, "
                    + "SUM(t.finalAmount) AS totalAmount, "
@@ -50,6 +50,7 @@ public class CustomerStatisticDAO extends DAO {
                 ps.setDate(4, Date.valueOf(endDate));
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
+                    // Bước 17 - 19: Khởi tạo và đóng gói thực thể CustomerStatistic (kế thừa từ Customer -> Member)
                     CustomerStatistic cs = new CustomerStatistic();
                     cs.setId(rs.getInt("id"));
                     cs.setUsername(rs.getString("username"));
@@ -78,6 +79,7 @@ public class CustomerStatisticDAO extends DAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // Bước 20: Trả về mảng CustomerStatistic[] cho CustomerStatisticsServlet
         return list.toArray(new CustomerStatistic[0]);
     }
 }

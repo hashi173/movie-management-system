@@ -45,6 +45,7 @@ public class LoginServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
+    // Bước 2 - 8 (Sequence Hình 2.10): Xử lý đăng nhập của nhân viên quản lý
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -54,13 +55,17 @@ public class LoginServlet extends HttpServlet {
         String inUsername = request.getParameter("inUsername");
         String inPassword = request.getParameter("inPassword");
 
+        // Bước 3 - 7: Gọi MemberDAO.checkLogin() để kiểm tra thông tin đăng nhập
         ManagementStaff managementStaff = memberDAO.checkLogin(inUsername, inPassword);
         if (managementStaff != null) {
+            // Đăng nhập thành công: Lưu thực thể ẩn managementStaff vào session
             HttpSession session = request.getSession();
             session.setAttribute("managementStaff", managementStaff);
+            // Bước 8: Chuyển tiếp (forward) sang trang ManagementStaffHomeView.jsp
             RequestDispatcher dispatcher = request.getRequestDispatcher("/view/ManagementStaff/ManagementStaffHomeView.jsp");
             dispatcher.forward(request, response);
         } else {
+            // Ngoại lệ 4.1: Sai tên đăng nhập hoặc mật khẩu -> Báo lỗi trên LoginView.jsp
             request.setAttribute("loginError", "Sai tên đăng nhập hoặc mật khẩu!");
             request.setAttribute("inUsername", inUsername);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/view/Member/LoginView.jsp");

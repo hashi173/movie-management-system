@@ -1,26 +1,29 @@
-/* Style thiết kế đồng bộ với giao diện thực tế */
+/* [1] Font chữ mặc định cho toàn bộ hệ thống */
 * {
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
 }
 
+/* [2] Màu nền ngoài cùng của toàn trang web (background-color) */
 body {
     margin: 0;
     padding: 24px;
-    background-color: #f4f6f9;
+    background-color: #f4f6f9; /* Đổi mã màu này để đổi nền trang web */
     color: #222;
 }
 
+/* [3] Khung hộp cửa sổ chính của mỗi màn hình (nền trắng, viền xám) */
 .window-card {
-    background: #ffffff;
+    background: #ffffff; /* Đổi mã màu này để đổi màu nền bên trong cửa sổ */
     border: 1px solid #8e9ba8;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
     margin: 0 auto;
     overflow: hidden;
 }
 
+/* [4] Thanh tiêu đề phía trên cùng của cửa sổ (VD: "Tìm kiếm phim", "Đăng nhập hệ thống") */
 .window-header {
-    background-color: #d4e3f3;
+    background-color: #d4e3f3; /* Đổi mã màu này để đổi màu thanh tiêu đề cửa sổ */
     border-bottom: 1px solid #8e9ba8;
     padding: 12px 18px;
     font-size: 18px;
@@ -29,18 +32,21 @@ body {
     color: #1c2b3a;
 }
 
+/* Căn trái tiêu đề cửa sổ (dùng ở trang Chi tiết giao dịch) */
 .window-header.left-align {
     text-align: left;
 }
 
+/* Phần thân nội dung bên trong cửa sổ */
 .window-body {
     padding: 24px;
 }
 
+/* [5] Kiểu dáng và màu sắc của tất cả các Nút bấm (Tìm kiếm, Trở về, Đăng nhập, Mua vé...) */
 .btn-primary {
     display: inline-block;
-    background: linear-gradient(to bottom, #92b1d6 0%, #7399c6 100%);
-    color: #111;
+    background: linear-gradient(to bottom, #92b1d6 0%, #7399c6 100%); /* Màu nền nút bấm */
+    color: #111; /* Màu chữ trên nút */
     font-weight: bold;
     font-size: 15px;
     padding: 10px 26px;
@@ -52,10 +58,12 @@ body {
     box-shadow: 0 2px 3px rgba(0,0,0,0.15);
 }
 
+/* Màu nút bấm khi di chuột (hover) vào */
 .btn-primary:hover {
     background: linear-gradient(to bottom, #81a4ce 0%, #6189b8 100%);
 }
 
+/* [6] Ô nhập liệu (Input tên phim, tên đăng nhập, mật khẩu, chọn ngày) */
 .form-input {
     padding: 8px 12px;
     font-size: 15px;
@@ -64,10 +72,12 @@ body {
     outline: none;
 }
 
+/* Viền ô nhập liệu khi đặt con trỏ chuột vào */
 .form-input:focus {
     border-color: #3b6ea5;
 }
 
+/* [7] Bảng hiển thị dữ liệu (Danh sách phim, Danh sách khách hàng, Danh sách giao dịch) */
 .data-table {
     width: 100%;
     border-collapse: collapse;
@@ -76,7 +86,7 @@ body {
     font-size: 14px;
 }
 
-/* Khung cuộn (scrollable) cho các danh sách bảng có cố định tiêu đề cột */
+/* Khung thanh cuộn dọc cho bảng dữ liệu khi danh sách dài */
 .table-scroll-container {
     max-height: 360px;
     overflow-y: auto;
@@ -92,52 +102,58 @@ body {
     border: none;
 }
 
+/* [8] Màu nền hàng tiêu đề cột (thead th) cố định khi cuộn bảng */
 .table-scroll-container .data-table thead th {
     position: sticky;
     top: 0;
     z-index: 2;
-    background-color: #b7d1eb;
+    background-color: #b7d1eb; /* Đổi mã màu này để đổi màu thanh tiêu đề bảng */
     box-shadow: inset 0 -1px 0 #7f9db9;
 }
 
+/* Định dạng chung cho ô tiêu đề cột của bảng (th) */
 .data-table th {
-    background-color: #b7d1eb;
+    background-color: #b7d1eb; /* Màu nền tiêu đề bảng */
     border: 1px solid #7f9db9;
     padding: 10px 12px;
     text-align: center;
     font-weight: bold;
 }
 
+/* Định dạng chung cho các ô dữ liệu trong bảng (td) - mặc định căn giữa */
 .data-table td {
     border: 1px solid #9cb2c7;
     padding: 10px 12px;
     text-align: center;
 }
 
-/* Tất cả các dòng mặc định đều có nền trắng */
+/* Màu nền mặc định của các dòng trong bảng (màu trắng) */
 .data-table tbody tr {
     background-color: #ffffff;
 }
 
-/* Chỉ đổi màu nền khi di chuột hoặc đang chọn dòng đó */
+/* Hiệu ứng con trỏ bàn tay cho các dòng có thể click chọn (phim, khách hàng) */
 .data-table tbody tr.clickable-row {
     cursor: pointer;
     transition: background-color 0.12s ease;
 }
 
+/* [9] Màu nền của dòng trong bảng khi di chuột vào (hover) hoặc đang được chọn */
 .data-table tbody tr.clickable-row:hover,
 .data-table tbody tr.selected-row {
     background-color: #e7f0f8;
 }
 
-/* Bỏ gạch chân (underline) ở các link trong bảng */
+/* [10] Định dạng chữ cho các đường link nằm trong ô bảng:
+   - Để text-decoration: none; -> Không gạch chân chữ trong bảng (nhìn gọn đẹp)
+   - Đổi thành text-decoration: underline; -> Có gạch chân chữ trong bảng */
 .data-table a {
     color: #111;
     text-decoration: none;
     display: block;
 }
 
-/* Modal thông báo ngoại lệ có nút OK */
+/* [11] Hộp thoại Popup thông báo ngoại lệ (sai mật khẩu, ngày không hợp lệ, không có giao dịch) */
 .modal-overlay {
     position: fixed;
     top: 0;

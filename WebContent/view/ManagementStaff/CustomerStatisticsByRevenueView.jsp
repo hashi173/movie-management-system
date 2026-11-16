@@ -2,6 +2,7 @@
          pageEncoding="UTF-8"
          import="java.math.BigDecimal,java.text.DecimalFormat,java.text.DecimalFormatSymbols,java.time.LocalDate,java.time.format.DateTimeFormatter,java.util.Locale,model.CustomerStatistic,model.ManagementStaff"%>
 <%
+    // Thực thể ẩn trên Class Diagram Hình 2.6: managementStaff (từ session)
     ManagementStaff managementStaff = (ManagementStaff) session.getAttribute("managementStaff");
     if (managementStaff == null) {
         response.sendRedirect(request.getContextPath() + "/view/Member/LoginView.jsp");
@@ -10,6 +11,7 @@
 
     LocalDate outStartDate = (LocalDate) request.getAttribute("outStartDate");
     LocalDate outEndDate = (LocalDate) request.getAttribute("outEndDate");
+    // Thực thể ẩn trên Class Diagram Hình 2.6: customerStatistic (kết quả từ CustomerStatisticDAO)
     CustomerStatistic[] customerStatistic = (CustomerStatistic[]) request.getAttribute("customerStatistic");
     BigDecimal outTotalRevenue = (BigDecimal) request.getAttribute("outTotalRevenue");
 

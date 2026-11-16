@@ -38,6 +38,7 @@ public class SearchMovieServlet extends HttpServlet {
         processRequest(request, response);
     }
 
+    // Bước 6 & 16 (Sequence Hình 2.8): Xử lý yêu cầu tìm kiếm phim và xem chi tiết phim
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -46,12 +47,14 @@ public class SearchMovieServlet extends HttpServlet {
         String inMovieName = request.getParameter("inMovieName");
         String movieCode = request.getParameter("movieCode");
 
+        // Bước 7 - 11: Nếu người dùng nhập từ khóa tìm kiếm -> gọi MovieDAO.searchMovies(inMovieName)
         if (inMovieName != null) {
             Movie[] outsubMovieList = movieDAO.searchMovies(inMovieName);
             request.setAttribute("inMovieName", inMovieName);
             request.setAttribute("outsubMovieList", outsubMovieList);
         }
 
+        // Bước 17 - 35: Nếu người dùng click chọn 1 phim -> gọi getMovieDetail() và getShowtimesByMovie()
         if (movieCode != null && !movieCode.trim().isEmpty()) {
             MovieGenre[] movieGenre = movieDAO.getMovieDetail(movieCode);
             Showtime[] showtime = movieDAO.getShowtimesByMovie(movieCode);
@@ -59,6 +62,7 @@ public class SearchMovieServlet extends HttpServlet {
             request.setAttribute("showtime", showtime);
         }
 
+        // Bước 12 & 36: Chuyển tiếp (forward) kết quả về trang SearchMovieView.jsp
         RequestDispatcher dispatcher = request.getRequestDispatcher("/view/Customer/SearchMovieView.jsp");
         dispatcher.forward(request, response);
     }
