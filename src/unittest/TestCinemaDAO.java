@@ -10,6 +10,7 @@ import dao.TransactionDAO;
 import model.CustomerStatistic;
 import model.ManagementStaff;
 import model.Movie;
+import model.MovieGenre;
 import model.Transaction;
 
 public class TestCinemaDAO {
@@ -35,7 +36,10 @@ public class TestCinemaDAO {
 
     @Test
     public void testGetMovieDetail_Chuan() {
-        Movie movie = movieDAO.getMovieDetail("MV78");
+        MovieGenre[] genres = movieDAO.getMovieDetail("MV78");
+        Assert.assertNotNull(genres);
+        Assert.assertTrue(genres.length > 0);
+        Movie movie = genres[0].getMovie();
         Assert.assertNotNull(movie);
         Assert.assertEquals("The Odyssey", movie.getTitle());
         Assert.assertEquals("Christopher Nolan", movie.getDirector());
