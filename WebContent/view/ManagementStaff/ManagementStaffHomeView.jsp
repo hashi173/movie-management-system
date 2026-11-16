@@ -2,6 +2,10 @@
          pageEncoding="UTF-8"
          import="model.ManagementStaff"%>
 <%
+    // =========================================================================
+    // [PHẦN 1: BẢO MẬT PHIÊN LÀM VIỆC (SESSION CHECK)]
+    // Lấy thực thể ẩn ManagementStaff trong session, nếu chưa đăng nhập thì đẩy về LoginView
+    // =========================================================================
     ManagementStaff managementStaff = (ManagementStaff) session.getAttribute("managementStaff");
     if (managementStaff == null) {
         response.sendRedirect(request.getContextPath() + "/view/Member/LoginView.jsp");
@@ -13,6 +17,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Trang chủ nhân viên quản lý</title>
+    <!-- Nhúng CSS dùng chung -->
     <link rel="stylesheet" href="<%=request.getContextPath()%>/css/style.css">
     <style>
         .staff-menu {
@@ -45,50 +50,45 @@
     </style>
 </head>
 <body>
+    <!-- ========================================================================= -->
+    <!-- [PHẦN 2: GIAO DIỆN TRANG CHỦ QUẢN LÝ - Boundary: ManagementStaffHomeView] -->
+    <!-- Khớp với Sơ đồ ca sử dụng Tổng quan và Bước 8 trên Sequence Diagram       -->
+    <!-- ========================================================================= -->
     <div class="window-card" style="max-width: 520px; min-height: 600px;">
         <div class="window-header">Trang chủ nhân viên quản lý</div>
+        
         <div class="window-body" style="display: flex; flex-direction: column; justify-content: space-between; min-height: 540px;">
             <div style="display: flex; align-items: center; gap: 22px;">
-                <!-- Menu chức năng nhân viên quản lý đúng theo Hình 2.5 & Hình 2.6 -->
+                
+                <!-- ===================================================================== -->
+                <!-- [PHẦN 2.1: MENU DANH SÁCH CHỨC NĂNG CỦA NHÂN VIÊN QUẢN LÝ]           -->
+                <!-- ===================================================================== -->
                 <ul class="staff-menu">
+                    <!-- [Thuộc tính -subViewStatistics : link]: Dẫn tới MODULE 2 (Xem thống kê) -->
                     <li class="active">
                         <a id="subViewStatistics" href="<%=request.getContextPath()%>/view/ManagementStaff/SelectStatisticsDateView.jsp">
                             Xem thống kê
                         </a>
                     </li>
-                    <li>
-                        <a id="subScheduleShowtimes" href="javascript:void(0);">Quản lý lịch chiếu</a>
-                    </li>
-                    <li>
-                        <a id="subManageMovie" href="javascript:void(0);">Quản lý phim</a>
-                    </li>
-                    <li>
-                        <a id="subManageCinema" href="javascript:void(0);">Quản lý thông tin rạp chiếu phim</a>
-                    </li>
-                    <li>
-                        <a id="subManageSeat" href="javascript:void(0);">Quản lý chỗ ngồi</a>
-                    </li>
-                    <li>
-                        <a id="subManageRoom" href="javascript:void(0);">Quản lý phòng</a>
-                    </li>
-                    <li>
-                        <a id="subManageTimeSlot" href="javascript:void(0);">Quản lý khung giờ</a>
-                    </li>
-                    <li>
-                        <a id="subManageCardRank" href="javascript:void(0);">Quản lý hạng thẻ</a>
-                    </li>
-                    <li>
-                        <a id="subManageTicketPricing" href="javascript:void(0);">Quản lý giá vé</a>
-                    </li>
+                    <li><a id="subScheduleShowtimes" href="javascript:void(0);">Quản lý lịch chiếu</a></li>
+                    <li><a id="subManageMovie" href="javascript:void(0);">Quản lý phim</a></li>
+                    <li><a id="subManageCinema" href="javascript:void(0);">Quản lý thông tin rạp chiếu phim</a></li>
+                    <li><a id="subManageSeat" href="javascript:void(0);">Quản lý chỗ ngồi</a></li>
+                    <li><a id="subManageRoom" href="javascript:void(0);">Quản lý phòng</a></li>
+                    <li><a id="subManageTimeSlot" href="javascript:void(0);">Quản lý khung giờ</a></li>
+                    <li><a id="subManageCardRank" href="javascript:void(0);">Quản lý hạng thẻ</a></li>
+                    <li><a id="subManageTicketPricing" href="javascript:void(0);">Quản lý giá vé</a></li>
                 </ul>
 
-                <!-- Lời chào nhân viên quản lý -->
+                <!-- [Thuộc tính -txtWelcome : text]: Hiển thị lời chào kèm họ tên nhân viên quản lý -->
                 <div id="txtWelcome" style="flex: 1; text-align: center; font-weight: bold; font-size: 16px; line-height: 1.5;">
                     Chào mừng,<br><%= managementStaff.getFullname() %>
                 </div>
             </div>
 
-            <!-- Nút đăng xuất (subLogout) -->
+            <!-- ===================================================================== -->
+            <!-- [PHẦN 2.2: NÚT ĐĂNG XUẤT (-subLogout : link)]                        -->
+            <!-- ===================================================================== -->
             <div style="margin-top: 32px;">
                 <a id="subLogout"
                    href="<%=request.getContextPath()%>/login?action=logout"
